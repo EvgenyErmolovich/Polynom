@@ -13,9 +13,7 @@ using namespace std;
 
 Polynom:: Polynom(double* b, unsigned int n)
 {
-    deg = 0;
-    for(int i = 0;i <= n;i++)
-        if(b[i]!=0) deg = i;
+    deg = n;
     a = new double [deg+1];
     for(int i = 0; i <= deg; i++)
         a[i] = b[i];
@@ -25,7 +23,7 @@ Polynom:: Polynom(const Polynom& other)
     deg = other.deg;
     a = new double[deg+1];
     for (int i = 0; i <= deg; i++)
-    a[i] = other.a[i];
+        a[i] = other.a[i];
 }
 Polynom& Polynom :: operator = (const Polynom& other)
 {
@@ -110,18 +108,21 @@ istream& operator >> (istream& in, Polynom& other)
         if(b[NewDeg] == 0)
             cout << "K" << NewDeg << " must not be zero!!!"<< endl;
     }
-    other = Polynom(b, NewDeg);
+    other = Polynom(b, NewDeg+1);
     return in;
 }
 ostream& operator << (ostream& out, const Polynom& other)
 {
-    if(other.a[other.deg]==1)
-        out << "X^" << other.deg;
-    else if(other.a[other.deg]==-1)
-        out << "-X^" << other.deg;
+    if(other.a[other.deg-1]==1)
+        out << "X^" << other.deg-1;
     else
-        out << other.a[other.deg] << "X^" << other.deg;
-    for(int i = other.deg - 1; i > 0; i--)
+    {
+       if(other.a[other.deg-1]== -1)
+           out << "-X^" << other.deg-1;
+       else
+           out << other.a[other.deg-1] << "X^" << other.deg-1;
+    }
+    for(int i = other.deg - 2; i > 0; i--)
     {
         if(other.a[i] > 0)
         {
@@ -132,10 +133,10 @@ ostream& operator << (ostream& out, const Polynom& other)
         }
         else if(other.a[i] < 0)
         {
-           if(other.a[i] == -1)
+            if(other.a[i] == -1)
                 out << " - " << "X^" << i;
             else
-                out << " - " << (-1)*other.a[i] << "X^" << i; 
+                out << " - " << (-1)*other.a[i] << "X^" << i;
         }
     }
     if(other.a[0]>0)

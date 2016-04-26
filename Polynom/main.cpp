@@ -21,6 +21,6 @@ int main()
     cin >> c;
     cout << c;
     cout << "Sum" << endl;
-    cout << b * c;
+    cout << c*2;
     return 0;
 }
